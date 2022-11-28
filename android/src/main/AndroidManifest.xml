@@ -15,9 +15,8 @@
             android:showOnLockScreen="true"
             android:launchMode="singleInstance"
             android:theme="@style/CallkitIncomingTheme"
-            android:exported="false"      
-            >
-            <intent-filter>
+            android:exported="true">
+            <intent-filter android:exported="true">
                 <action android:name="com.hiennv.flutter_callkit_incoming.ACTION_CALL_INCOMING" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -27,7 +26,7 @@
             android:name="com.hiennv.flutter_callkit_incoming.CallkitIncomingBroadcastReceiver"
             android:enabled="true"
             android:exported="true">
-            <intent-filter>
+            <intent-filter android:exported="true">
                 <action android:name="com.hiennv.flutter_callkit_incoming.ACTION_CALL_INCOMING" />
                 <action android:name="com.hiennv.flutter_callkit_incoming.ACTION_CALL_ACCEPT" />
                 <action android:name="com.hiennv.flutter_callkit_incoming.ACTION_CALL_DECLINE" />
@@ -37,13 +36,12 @@
         </receiver>
         <service android:name=".RingtonePlayerService"
             android:process=":MyServiceProcess"
-            android:exported="false"     
+            android:exported="true"
             />
         <activity
             android:name="com.example.ExitActivity"
             android:theme="@android:style/Theme.NoDisplay"
             android:autoRemoveFromRecents="true"
-            android:exported="false" 
-                  />
+            android:exported="true"/>
     </application>
 </manifest>
