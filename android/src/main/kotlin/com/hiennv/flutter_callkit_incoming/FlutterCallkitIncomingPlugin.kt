@@ -24,7 +24,7 @@ class FlutterCallkitIncomingPlugin : FlutterPlugin, MethodCallHandler, ActivityA
 
     companion object {
 
-        var myPlayer= MediaPlayer()
+        var myPlayer = MediaPlayer()
         private val eventHandler = EventCallbackHandler()
 
         fun sendEvent(event: String, body: Map<String, Any>) {
@@ -42,7 +42,7 @@ class FlutterCallkitIncomingPlugin : FlutterPlugin, MethodCallHandler, ActivityA
     private lateinit var callkitNotificationManager: CallkitNotificationManager
     private lateinit var channel: MethodChannel
     private lateinit var events: EventChannel
-    private var data: Data? = null
+    private lateinit var data: Data
 
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         this.context = flutterPluginBinding.applicationContext
@@ -61,8 +61,10 @@ class FlutterCallkitIncomingPlugin : FlutterPlugin, MethodCallHandler, ActivityA
                 "showCallkitIncoming" -> {
                     myPlayer.stop()
                     context.stopService(Intent(context, RingtonePlayerService::class.java))
-
-                    data = Data(call.arguments())
+                    val arguments = call.arguments() as? Map<String, Any>
+                    if (arguments != null) {
+                        data = Data(arguments)
+                    }
                     data!!.from = "notification"
                     callkitNotificationManager.showIncomingNotification(data!!.toBundle())
                     //send BroadcastReceiver
@@ -77,7 +79,10 @@ class FlutterCallkitIncomingPlugin : FlutterPlugin, MethodCallHandler, ActivityA
                 "startCall" -> {
                     myPlayer.stop()
                     context.stopService(Intent(context, RingtonePlayerService::class.java))
-                    data = Data(call.arguments())
+                    val arguments = call.arguments() as? Map<String, Any>
+                    if (arguments != null) {
+                        data = Data(arguments)
+                    }
                     context.sendBroadcast(
                         CallkitIncomingBroadcastReceiver.getIntentStart(
                             context,
@@ -88,7 +93,10 @@ class FlutterCallkitIncomingPlugin : FlutterPlugin, MethodCallHandler, ActivityA
                 }
                 "endCall" -> {
                     myPlayer.stop()
-                    val data = Data(call.arguments())
+                    val arguments = call.arguments() as? Map<String, Any>
+                    if (arguments!=null) {
+                        val data = Data(arguments)
+                    }
                     context.sendBroadcast(
                         CallkitIncomingBroadcastReceiver.getIntentEnded(
                             context,
@@ -104,7 +112,7 @@ class FlutterCallkitIncomingPlugin : FlutterPlugin, MethodCallHandler, ActivityA
                 }
                 "activeCalls" -> {
                     val json = JSONArray()
-                    if(data != null) {
+                    if (data != null) {
                         val item = JSONObject()
                         item.put("id", data?.uuid)
                         json.put(item)
