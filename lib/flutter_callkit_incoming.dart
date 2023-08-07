@@ -54,8 +54,8 @@ class FlutterCallkitIncoming {
   }
 
   /// End all calls.
-  static Future endAllCalls() async {
-    await _channel.invokeMethod("endAllCalls");
+  static Future endAllCalls(dynamic params) async {
+    await _channel.invokeMethod("endAllCalls",params);
   }
 
   /// Get active calls.

@@ -1,12 +1,11 @@
 package com.hiennv.flutter_callkit_incoming
-
 import android.app.Activity
-import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.annotation.NonNull
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -32,11 +31,6 @@ class FlutterCallkitIncomingPlugin : FlutterPlugin, MethodCallHandler, ActivityA
         }
 
     }
-
-    /// The MethodChannel that will the communication between Flutter and native Android
-    ///
-    /// This local reference serves to register the plugin with the Flutter Engine and unregister it
-    /// when the Flutter Engine is detached from the Activity
     private lateinit var activity: Activity
     private lateinit var context: Context
     private lateinit var callkitNotificationManager: CallkitNotificationManager
@@ -65,13 +59,12 @@ class FlutterCallkitIncomingPlugin : FlutterPlugin, MethodCallHandler, ActivityA
                     if (arguments != null) {
                         data = Data(arguments)
                     }
-                    data!!.from = "notification"
-                    callkitNotificationManager.showIncomingNotification(data!!.toBundle())
-                    //send BroadcastReceiver
+                    data.from = "notification"
+                    callkitNotificationManager.showIncomingNotification(data.toBundle())
                     context.sendBroadcast(
                         CallkitIncomingBroadcastReceiver.getIntentIncoming(
                             context,
-                            data!!.toBundle()
+                            data.toBundle()
                         )
                     )
                     result.success("OK")
@@ -86,7 +79,7 @@ class FlutterCallkitIncomingPlugin : FlutterPlugin, MethodCallHandler, ActivityA
                     context.sendBroadcast(
                         CallkitIncomingBroadcastReceiver.getIntentStart(
                             context,
-                            data!!.toBundle()
+                            data.toBundle()
                         )
                     )
                     result.success("OK")
@@ -106,17 +99,20 @@ class FlutterCallkitIncomingPlugin : FlutterPlugin, MethodCallHandler, ActivityA
                     result.success("OK")
                 }
                 "endAllCalls" -> {
+                    val arguments = call.arguments() as? Map<String, Any>
+                    if (arguments != null) {
+                        data = Data(arguments)
+                    }
                     myPlayer.stop()
                     context.stopService(Intent(context, RingtonePlayerService::class.java))
+                    callkitNotificationManager.clearIncomingNotification(data.toBundle())
                     result.success("OK")
                 }
                 "activeCalls" -> {
                     val json = JSONArray()
-                    if (data != null) {
-                        val item = JSONObject()
-                        item.put("id", data?.uuid)
-                        json.put(item)
-                    }
+                    val item = JSONObject()
+                    item.put("id", data.uuid)
+                    json.put(item)
                     result.success(json.toString())
                 }
             }
@@ -166,6 +162,5 @@ class FlutterCallkitIncomingPlugin : FlutterPlugin, MethodCallHandler, ActivityA
             eventSink = null
         }
     }
-
 
 }
