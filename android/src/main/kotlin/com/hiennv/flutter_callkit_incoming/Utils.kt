@@ -1,10 +1,8 @@
 package com.hiennv.flutter_callkit_incoming
-
-import android.app.Activity
-import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
+import android.os.Build
 
 class Utils {
 
@@ -53,9 +51,13 @@ class Utils {
             val packageName = context.packageName
             val intent = context.packageManager.getLaunchIntentForPackage(packageName)?.cloneFilter()
 
-            intent?.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            }else{
+                intent?.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+            }
             intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
             context.startActivity(intent)
         }
 
