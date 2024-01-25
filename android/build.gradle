@@ -26,7 +26,8 @@ apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 30
-
+    namespace 'com.hiennv.flutter_callkit_incoming'
+    
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
