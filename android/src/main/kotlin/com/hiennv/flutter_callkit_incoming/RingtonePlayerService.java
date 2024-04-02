@@ -2,16 +2,15 @@ package com.hiennv.flutter_callkit_incoming;
 
 import android.app.Service;
 import android.content.Intent;
-import android.media.MediaPlayer;
-import android.os.Handler;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.IBinder;
 import android.provider.Settings;
-import com.hiennv.flutter_callkit_incoming.FlutterCallkitIncomingPlugin;
-
-import android.widget.Toast;
 
 public class RingtonePlayerService extends Service {
-    ;
+
+    private Ringtone ringtone;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -20,28 +19,23 @@ public class RingtonePlayerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        //getting systems default ringtone
-        FlutterCallkitIncomingPlugin.Companion.setMyPlayer(MediaPlayer.create(this,
-                Settings.System.DEFAULT_RINGTONE_URI));
-        //setting loop play to true
-        //this will make the ringtone continuously playing
-        FlutterCallkitIncomingPlugin.Companion.getMyPlayer().setLooping(true);
-        //staring the player
-        FlutterCallkitIncomingPlugin.Companion.getMyPlayer().start();
-//        Handler h = new Handler();
-//        long delayInMilliseconds = 60000;
-//        h.postDelayed(new Runnable() {
-//            public void run() {
-//                FlutterCallkitIncomingPlugin.Companion.getMyPlayer().stop();
-//            }
-//        }, delayInMilliseconds);
-        //we have some options for service
-        //start sticky means service will be explicity started and stopped
+        Uri ringtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+        if (ringtoneUri == null) {
+            ringtoneUri = Settings.System.DEFAULT_RINGTONE_URI;
+        }
+        ringtone = RingtoneManager.getRingtone(this, ringtoneUri);
+        ringtone.setLooping(true);
+        if (ringtone != null) {
+            ringtone.play();
+        }
+
         return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
-        FlutterCallkitIncomingPlugin.Companion.getMyPlayer().stop();
+        if (ringtone != null && ringtone.isPlaying()) {
+            ringtone.stop();
+        }
     }
 }

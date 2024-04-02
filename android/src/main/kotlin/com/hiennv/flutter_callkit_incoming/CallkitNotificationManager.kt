@@ -89,9 +89,6 @@ class CallkitNotificationManager(private val context: Context) {
         notificationBuilder.setColor(Color.parseColor("#80BCE0"))
         notificationBuilder.setStyle(NotificationCompat.DecoratedCustomViewStyle())
         notificationBuilder.setColorized(true)
-//        notificationBuilder.setFullScreenIntent(
-//                getActivityPendingIntent(notificationId, data), true
-//        )
         notificationBuilder.setContentIntent(getAcceptPendingIntent(notificationId, data))
         val typeCall = data.getInt(EXTRA_CALLKIT_TYPE, -1)
         var smallIcon = context.applicationInfo.icon

@@ -97,9 +97,6 @@ class CallkitIncomingBroadcastReceiver : BroadcastReceiver() {
                 try {
                     sendEventFlutter(ACTION_CALL_INCOMING, data)
                     context.startService(Intent(context, RingtonePlayerService::class.java))
-//                    val duration = data.getLong(EXTRA_CALLKIT_DURATION, 0L)
-//                    callkitSoundPlayer.setDuration(duration)
-//                    callkitSoundPlayer.play(data)
                 } catch (error: Exception) {
                     error.printStackTrace()
                 }
@@ -116,7 +113,6 @@ class CallkitIncomingBroadcastReceiver : BroadcastReceiver() {
                     sendEventFlutter(ACTION_CALL_ACCEPT, data)
                     Utils.backToForeground(context)
                     context.stopService(Intent(context, RingtonePlayerService::class.java))
-                    // callkitSoundPlayer.stop()
                     callkitNotificationManager.clearIncomingNotification(data)
                 } catch (error: Exception) {
                     error.printStackTrace()
@@ -126,7 +122,6 @@ class CallkitIncomingBroadcastReceiver : BroadcastReceiver() {
                 try {
                     sendEventFlutter(ACTION_CALL_DECLINE, data)
                     context.stopService(Intent(context, RingtonePlayerService::class.java))
-                    //  callkitSoundPlayer.stop()
                     callkitNotificationManager.clearIncomingNotification(data)
                 } catch (error: Exception) {
                     error.printStackTrace()
@@ -136,7 +131,6 @@ class CallkitIncomingBroadcastReceiver : BroadcastReceiver() {
                 try {
                     sendEventFlutter(ACTION_CALL_ENDED, data)
                     context.stopService(Intent(context, RingtonePlayerService::class.java))
-                    //  callkitSoundPlayer.stop()
                 } catch (error: Exception) {
                     error.printStackTrace()
                 }
@@ -145,7 +139,6 @@ class CallkitIncomingBroadcastReceiver : BroadcastReceiver() {
                 try {
                     sendEventFlutter(ACTION_CALL_TIMEOUT, data)
                     context.stopService(Intent(context, RingtonePlayerService::class.java))
-                    //   callkitSoundPlayer.stop()
                     callkitNotificationManager.showMissCallNotification(data)
                 } catch (error: Exception) {
                     error.printStackTrace()
