@@ -216,13 +216,6 @@ class CallkitNotificationManager(private val context: Context) {
             R.id.tvNameCaller,
             data.getString(CallkitConstants.EXTRA_CALLKIT_NAME_CALLER, "")
         )
-        val isShowCallID = data?.getBoolean(CallkitConstants.EXTRA_CALLKIT_IS_SHOW_CALL_ID, false)
-        if (isShowCallID == true) {
-            remoteViews.setTextViewText(
-                R.id.tvNumber,
-                data.getString(CallkitConstants.EXTRA_CALLKIT_HANDLE, "")
-            )
-        }
         remoteViews.setOnClickPendingIntent(
             R.id.llDecline,
             getDeclinePendingIntent(notificationId, data)
@@ -241,14 +234,14 @@ class CallkitNotificationManager(private val context: Context) {
             R.id.tvAccept,
             if (TextUtils.isEmpty(textAccept)) context.getString(R.string.text_accept) else textAccept
         )
-        val avatarUrl = data.getString(CallkitConstants.EXTRA_CALLKIT_AVATAR, "")
-        if (avatarUrl != null && avatarUrl.isNotEmpty()) {
-            val headers =
-                data.getSerializable(CallkitConstants.EXTRA_CALLKIT_HEADERS) as HashMap<String, Any?>
-            getPicassoInstance(context, headers).load(avatarUrl)
-                .transform(CircleTransform())
-                .into(targetLoadAvatarCustomize)
-        }
+//        val avatarUrl = data.getString(CallkitConstants.EXTRA_CALLKIT_AVATAR, "")
+//        if (avatarUrl != null && avatarUrl.isNotEmpty()) {
+//            val headers =
+//                data.getSerializable(CallkitConstants.EXTRA_CALLKIT_HEADERS) as HashMap<String, Any?>
+//            getPicassoInstance(context, headers).load(avatarUrl)
+//                .transform(CircleTransform())
+//                .into(targetLoadAvatarCustomize)
+//        }
     }
 
     @SuppressLint("MissingPermission")
@@ -300,14 +293,6 @@ class CallkitNotificationManager(private val context: Context) {
                 R.id.tvNameCaller,
                 data.getString(CallkitConstants.EXTRA_CALLKIT_NAME_CALLER, "")
             )
-            val isShowCallID =
-                data?.getBoolean(CallkitConstants.EXTRA_CALLKIT_IS_SHOW_CALL_ID, false)
-            if (isShowCallID == true) {
-                notificationViews?.setTextViewText(
-                    R.id.tvNumber,
-                    data.getString(CallkitConstants.EXTRA_CALLKIT_HANDLE, "")
-                )
-            }
             notificationViews?.setOnClickPendingIntent(
                 R.id.llCallback,
                 getCallbackPendingIntent(notificationId, data)
