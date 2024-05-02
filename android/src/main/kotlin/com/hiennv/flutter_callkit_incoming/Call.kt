@@ -17,6 +17,8 @@ data class Data(val args: Map<String, Any?>) {
     var nameCaller: String = (args["nameCaller"] as? String) ?: ""
     @JsonProperty("appName")
     var appName: String = (args["appName"] as? String) ?: ""
+    @JsonProperty("appLogoUrl")
+    var appLogoUrl: String = (args["appLogoUrl"] as? String) ?: ""
     @JsonProperty("handle")
     var handle: String = (args["handle"] as? String) ?: ""
     @JsonProperty("avatar")
@@ -143,7 +145,7 @@ data class Data(val args: Map<String, Any?>) {
         bundle.putLong(CallkitConstants.EXTRA_CALLKIT_DURATION, duration)
         bundle.putString(CallkitConstants.EXTRA_CALLKIT_TEXT_ACCEPT, textAccept)
         bundle.putString(CallkitConstants.EXTRA_CALLKIT_TEXT_DECLINE, textDecline)
-
+        bundle.putString(CallkitConstants.EXTRA_CALLKIT_APP_LOGO_URL, appLogoUrl)
         missedNotificationId?.let {
             bundle.putInt(
                 CallkitConstants.EXTRA_CALLKIT_MISSED_CALL_ID,
@@ -226,6 +228,8 @@ data class Data(val args: Map<String, Any?>) {
                 bundle.getString(CallkitConstants.EXTRA_CALLKIT_NAME_CALLER, "")
             data.appName =
                 bundle.getString(CallkitConstants.EXTRA_CALLKIT_APP_NAME, "")
+            data.appLogoUrl =
+                bundle.getString(CallkitConstants.EXTRA_CALLKIT_APP_LOGO_URL, "")
             data.handle =
                 bundle.getString(CallkitConstants.EXTRA_CALLKIT_HANDLE, "")
             data.avatar =

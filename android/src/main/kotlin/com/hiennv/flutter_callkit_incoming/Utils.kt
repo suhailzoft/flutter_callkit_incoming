@@ -3,6 +3,8 @@ package com.hiennv.flutter_callkit_incoming
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import com.fasterxml.jackson.databind.ObjectMapper
 import java.lang.ref.WeakReference
 
@@ -77,6 +79,9 @@ class Utils {
 
         fun isTablet(context: Context): Boolean {
             return context.resources.getBoolean(R.bool.isTablet)
+        }
+        fun getImageBitmapFromBytes(imageBytes: ByteArray): Bitmap? {
+            return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
         }
     }
 }
