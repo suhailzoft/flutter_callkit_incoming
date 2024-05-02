@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 import 'android_params.dart';
 import 'ios_params.dart';
-import 'dart:typed_data';
+
 part 'call_kit_params.g.dart';
 
 /// Object config for General.
@@ -25,7 +25,6 @@ class CallKitParams {
     this.headers,
     this.android,
     this.ios,
-    this.appLogoUrl,
   });
 
   final String? id;
@@ -38,7 +37,6 @@ class CallKitParams {
   final int? duration;
   final String? textAccept;
   final String? textDecline;
-  final String? appLogoUrl;
   final NotificationParams? missedCallNotification;
   final Map<String, dynamic>? extra;
   final Map<String, dynamic>? headers;

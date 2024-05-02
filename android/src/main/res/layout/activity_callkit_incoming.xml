@@ -20,51 +20,43 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="false"
         android:orientation="vertical">
-
         <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="3" />
-
         <ImageView
             android:id="@+id/appLogo"
             android:layout_width="120dp"
             android:layout_height="43.4dp"
             android:layout_gravity="center_horizontal"
             tools:ignore="ContentDescription" />
-
         <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2" />
+            android:layout_weight="1" />
 
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
             android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
             android:orientation="vertical">
-
             <com.hiennv.flutter_callkit_incoming.widgets.RippleRelativeLayout
-                android:layout_width="200dp"
-                android:layout_height="200dp"
+                android:layout_width="@dimen/size_button_x2_5"
+                android:layout_height="@dimen/size_button_x2_5"
                 app:ripple_amount="4"
                 app:ripple_radius="@dimen/base_margin_x1_5"
-                app:ripple_scale="7">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/ivAvatar"
-                    android:layout_width="@dimen/size_avatar"
-                    android:layout_height="@dimen/size_avatar"
-                    android:layout_centerInParent="true"
-                    android:padding="@dimen/base_margin_x1_5"
-                    android:src="@drawable/ic_default_avatar"
-                    app:civ_border_color="#356e9a"
-                    app:civ_border_width="1dp"
-                    app:civ_circle_background_color="#356e9a" />
+                app:ripple_scale="4.5">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ivAvatar"
+                android:layout_width="@dimen/size_avatar"
+                android:layout_height="@dimen/size_avatar"
+                android:src="@drawable/ic_default_avatar"
+                app:civ_border_color="#356e9a"
+                app:civ_circle_background_color="#356e9a"
+                app:civ_border_width="1dp" />
             </com.hiennv.flutter_callkit_incoming.widgets.RippleRelativeLayout>
-
             <TextView
                 android:id="@+id/tvNameCaller"
                 android:layout_width="wrap_content"
@@ -73,15 +65,12 @@
                 android:autoSizeMinTextSize="12sp"
                 android:autoSizeStepGranularity="2sp"
                 android:autoSizeTextType="uniform"
+                android:paddingTop="30dp"
                 android:ellipsize="end"
-                android:foregroundGravity="center"
-                android:gravity="center_horizontal"
-                android:minHeight="20dp"
-                android:minLines="2"
-                android:paddingHorizontal="@dimen/base_margin_x6"
-                android:textAlignment="center"
+                android:maxLines="1"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/size_text_name"
+                android:paddingHorizontal="@dimen/base_margin_x4"
                 app:autoSizeMaxTextSize="@dimen/size_text_name"
                 app:autoSizeMinTextSize="12sp"
                 app:autoSizeStepGranularity="2sp"
@@ -90,22 +79,33 @@
                 tools:targetApi="o"
                 tools:text="Caller Name" />
 
+            <TextView
+                android:id="@+id/tvNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/action_text"
+                android:textSize="@dimen/size_text_action"
+                tools:text="Some info" />
 
         </LinearLayout>
+
 
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2" />
+            android:layout_weight="1" />
 
         <LinearLayout
             android:id="@+id/llAction"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_weight="5"
             android:layout_gravity="bottom"
             android:layout_marginBottom="0dp"
-            android:layout_weight="5"
             android:fitsSystemWindows="true"
             android:orientation="horizontal">
 

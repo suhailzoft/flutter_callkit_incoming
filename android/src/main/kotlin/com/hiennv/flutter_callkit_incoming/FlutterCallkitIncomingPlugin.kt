@@ -4,10 +4,8 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.annotation.NonNull
 import com.hiennv.flutter_callkit_incoming.Utils.Companion.reapCollection
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -40,7 +38,7 @@ class FlutterCallkitIncomingPlugin : FlutterPlugin, MethodCallHandler, ActivityA
         private val eventChannels = mutableMapOf<BinaryMessenger, EventChannel>()
         private val eventHandlers = mutableListOf<WeakReference<EventCallbackHandler>>()
 
-        fun sendEvent(event: String, body: Map<String, Any>) {
+        fun sendEvent(event: String, body: Map<String, Any?>) {
             eventHandlers.reapCollection().forEach {
                 it.get()?.send(event, body)
             }
