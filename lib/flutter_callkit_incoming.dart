@@ -13,9 +13,9 @@ import 'entities/entities.dart';
 
 class FlutterCallkitIncoming {
   static const MethodChannel _channel =
-      MethodChannel('flutter_callkit_incoming');
+  MethodChannel('flutter_callkit_incoming');
   static const EventChannel _eventChannel =
-      EventChannel('flutter_callkit_incoming_events');
+  EventChannel('flutter_callkit_incoming_events');
 
   /// Listen to event callback from [FlutterCallkitIncoming].
   ///
@@ -41,6 +41,16 @@ class FlutterCallkitIncoming {
   /// On iOS, using Callkit. On Android, using a custom UI.
   static Future showCallkitIncoming(CallKitParams params) async {
     await _channel.invokeMethod("showCallkitIncoming", params.toJson());
+  }
+
+  static Future<bool> checkIsFullScreenNotificationAllowed() async {
+    final hasPermission = await _channel.invokeMethod(
+      "checkFullScreenNotificationPermission",);
+    return hasPermission;
+  }
+
+  static Future requestFullScreenNotificationPermission() async {
+    await _channel.invokeMethod("requestFullScreenNotificationPermission",);
   }
 
   /// Show Miss Call Notification.
