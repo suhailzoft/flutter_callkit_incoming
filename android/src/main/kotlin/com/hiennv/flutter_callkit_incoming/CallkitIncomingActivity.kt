@@ -189,7 +189,6 @@ class CallkitIncomingActivity : Activity() {
             if (!appLogoUrl.startsWith("http://", true) && !appLogoUrl.startsWith("https://", true)){
                 appLogoUrl = String.format("file:///android_asset/flutter_assets/%s", appLogoUrl)
             }
-            Log.d("askjdasld ",appLogoUrl)
             val headers = data?.getSerializable(CallkitConstants.EXTRA_CALLKIT_HEADERS) as HashMap<String, Any?>
             getPicassoInstance(this@CallkitIncomingActivity, headers)
                 .load(appLogoUrl)

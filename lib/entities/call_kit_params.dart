@@ -3,7 +3,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 import 'android_params.dart';
 import 'ios_params.dart';
-import 'dart:typed_data';
 part 'call_kit_params.g.dart';
 
 /// Object config for General.

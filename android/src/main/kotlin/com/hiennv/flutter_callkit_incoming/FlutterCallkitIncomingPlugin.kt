@@ -10,12 +10,18 @@ import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.net.Uri
 import android.os.Build
+import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.util.Log
 import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.ProcessLifecycleOwner
 import com.hiennv.flutter_callkit_incoming.Utils.Companion.reapCollection
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -96,6 +102,7 @@ class FlutterCallkitIncomingPlugin : FlutterPlugin, MethodCallHandler, ActivityA
     private var activity: Activity? = null
     private var context: Context? = null
     private var callkitNotificationManager: CallkitNotificationManager? = null
+    private var appState: String = ""
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         sharePluginWithRegister(flutterPluginBinding)
@@ -157,6 +164,7 @@ class FlutterCallkitIncomingPlugin : FlutterPlugin, MethodCallHandler, ActivityA
     @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         try {
+            ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleEventObserver)
             when (call.method) {
                 "showCallkitIncoming" -> {
                     val data = Data(call.arguments() ?: HashMap())
@@ -333,6 +341,10 @@ class FlutterCallkitIncomingPlugin : FlutterPlugin, MethodCallHandler, ActivityA
                     }
                 }
 
+                "getAppState" -> {
+                    result.success(appState);
+                }
+
             }
         } catch (error: Exception) {
             result.error("error", error.message, "")
@@ -387,10 +399,41 @@ class FlutterCallkitIncomingPlugin : FlutterPlugin, MethodCallHandler, ActivityA
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray): Boolean {
-        instance.callkitNotificationManager?.onRequestPermissionsResult(instance.activity, requestCode, grantResults)
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ): Boolean {
+        instance.callkitNotificationManager?.onRequestPermissionsResult(
+            instance.activity,
+            requestCode,
+            grantResults
+        )
         return true
     }
 
 
+    var lifecycleEventObserver = LifecycleEventObserver { _, event ->
+        when (event) {
+            Lifecycle.Event.ON_STOP -> {
+                appState = "background"
+            }
+            Lifecycle.Event.ON_START -> {
+                appState = "active"
+            }
+            Lifecycle.Event.ON_DESTROY -> {
+                appState = "inactive"
+            }
+            Lifecycle.Event.ON_CREATE -> {
+                appState = "inactive"
+            }
+            Lifecycle.Event.ON_RESUME -> {
+                appState = "active"
+            }
+            Lifecycle.Event.ON_PAUSE -> {
+                appState = "background"
+            }
+            else -> {}
+        }
+    }
 }

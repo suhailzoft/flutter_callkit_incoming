@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 
 import 'entities/entities.dart';
+import 'entities/enums.dart';
 
 /// Instance to use library functions.
 /// * showCallkitIncoming(dynamic)
@@ -13,9 +14,9 @@ import 'entities/entities.dart';
 
 class FlutterCallkitIncoming {
   static const MethodChannel _channel =
-  MethodChannel('flutter_callkit_incoming');
+      MethodChannel('flutter_callkit_incoming');
   static const EventChannel _eventChannel =
-  EventChannel('flutter_callkit_incoming_events');
+      EventChannel('flutter_callkit_incoming_events');
 
   /// Listen to event callback from [FlutterCallkitIncoming].
   ///
@@ -45,12 +46,15 @@ class FlutterCallkitIncoming {
 
   static Future<bool> checkIsFullScreenNotificationAllowed() async {
     final hasPermission = await _channel.invokeMethod(
-      "checkFullScreenNotificationPermission",);
+      "checkFullScreenNotificationPermission",
+    );
     return hasPermission;
   }
 
   static Future requestFullScreenNotificationPermission() async {
-    await _channel.invokeMethod("requestFullScreenNotificationPermission",);
+    await _channel.invokeMethod(
+      "requestFullScreenNotificationPermission",
+    );
   }
 
   /// Show Miss Call Notification.
@@ -141,6 +145,12 @@ class FlutterCallkitIncoming {
   /// Only Android: show request permission post notification for Android 13+
   static Future requestNotificationPermission(dynamic data) async {
     return await _channel.invokeMethod("requestNotificationPermission", data);
+  }
+
+  static Future<CallKitAppState> getAppState() async {
+    final appState = await _channel.invokeMethod("getAppState");
+    return CallKitAppState.values
+        .firstWhere((element) => element.name == appState.toUpperCase());
   }
 
   static CallEvent? _receiveCallEvent(dynamic data) {

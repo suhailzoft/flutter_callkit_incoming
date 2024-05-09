@@ -209,6 +209,17 @@ public class SwiftFlutterCallkitIncomingPlugin: NSObject, FlutterPlugin, CXProvi
         case "setAudioRoute":
             result("OK")
             break
+        case "getAppState":
+            let state = UIApplication.shared.applicationState
+            if state == .active {
+                result ("active")
+            }
+            else if state == .inactive {
+                result ("inactive")
+            }
+            else if state == .background {
+                result ("background")
+            }
         default:
             result(FlutterMethodNotImplemented)
         }
